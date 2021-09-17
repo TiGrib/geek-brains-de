@@ -1,0 +1,5 @@
+mysqldump example > example_db_dump.sql
+
+mysql --execute="CREATE DATABASE sample;"
+
+mysql sample < example_db_dump.sql
