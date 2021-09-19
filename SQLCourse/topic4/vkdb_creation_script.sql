@@ -93,3 +93,60 @@ CREATE TABLE communities_users (
 
 ALTER TABLE communities_users ADD CONSTRAINT communities_users_user_id FOREIGN KEY (user_id) REFERENCES users(id);
 ALTER TABLE communities_users ADD CONSTRAINT communities_users_community_id_id FOREIGN KEY (community_id) REFERENCES communities(id);
+
+/*
+Так-как посты могут быть созданы и пользователями и сообществами, то есть несколько вариантов архитектуры:
+- одна таблица с разными атрибутами user_id и community_id
+- одна таблица с атрибутами object_id и object_type(категориальный атрибут enum('community', 'user'), или через доп таблицу)
+- две таблицы для юзеров и для сообществ
+можно добавить атрибут attached-files.
+*/
+CREATE TABLE community_posts (
+	id INT UNSIGNED NOT NULL COMMENT "Индетификатор поста",
+    community_id INT UNSIGNED NOT NULL COMMENT "Ссылка на сообщество",
+    title VARCHAR(255) COMMENT "Название поста",
+    post_text TINYTEXT COMMENT "Текст поста",    
+	created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT "Время создания строки",  
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT "Время обновления строки", 
+    PRIMARY KEY (community_id, id) COMMENT "Составной первичный ключ"
+) COMMENT "Посты пользователя";
+
+ALTER TABLE community_posts ADD CONSTRAINT community_posts_community_id FOREIGN KEY (community_id) REFERENCES communities(id);
+
+CREATE TABLE user_posts(
+	id INT UNSIGNED NOT NULL COMMENT "Индетификатор поста",
+    user_id INT UNSIGNED NOT NULL COMMENT "Ссылка на пользователя",
+    title VARCHAR(255) COMMENT "Название поста",
+    post_text TINYTEXT COMMENT "Текст поста",    
+	created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT "Время создания строки",  
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT "Время обновления строки", 
+    PRIMARY KEY (user_id, id) COMMENT "Составной первичный ключ"
+) COMMENT "Посты пользователя";
+
+ALTER TABLE user_posts ADD CONSTRAINT user_posts_user_id  FOREIGN KEY (user_id) REFERENCES users(id);
+
+/*
+Рассуждения касательно постов для разых сущностей верны и для лайков, поэтому решил сделать три таблицы
+Опишем таблицу хранящую лайки 
+- указатель на объект (user_id, media_id, post_id)
+- список тех кто лайкнул формат данных JSON учитывая временную сложность на операции {"id": "user_id"}
+*/
+CREATE TABLE user_likes(
+    user_id INT UNSIGNED PRIMARY KEY NOT NULL  COMMENT "id объекта которому поставили лайк",
+    likes_dict JSON COMMENT "'список' юзеров"
+) COMMENT "Список лайков";
+
+CREATE TABLE user_post_likes(
+    post_id INT UNSIGNED PRIMARY KEY NOT NULL  COMMENT "id объекта которому поставили лайк",
+    likes_dict JSON COMMENT "'список' юзеров"
+) COMMENT "Список лайков";
+
+CREATE TABLE community_post_likes(
+    post_id INT UNSIGNED PRIMARY KEY NOT NULL  COMMENT "id объекта которому поставили лайк",
+    likes_dict JSON COMMENT "'список' юзеров"
+) COMMENT "Список лайков";
+
+CREATE TABLE media_likes(
+    media_id INT UNSIGNED PRIMARY KEY NOT NULL  COMMENT "id объекта которому поставили лайк",
+    likes_dict JSON COMMENT "'список' юзеров"
+) COMMENT "Список лайков";
