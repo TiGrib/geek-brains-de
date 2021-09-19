@@ -101,29 +101,18 @@ ALTER TABLE communities_users ADD CONSTRAINT communities_users_community_id_id F
 - две таблицы для юзеров и для сообществ
 можно добавить атрибут attached-files.
 */
-CREATE TABLE community_posts (
-	id INT UNSIGNED NOT NULL COMMENT "Индетификатор поста",
-    community_id INT UNSIGNED NOT NULL COMMENT "Ссылка на сообщество",
+CREATE TABLE posts (
+	id INT UNSIGNED NOT NULL PRIMARY KEY,
+    user_created_id INT UNSIGNED NOT NULL COMMENT "Ссылка на автора",
+    community_pub_id INT UNSIGNED COMMENT "Id сообщество если пост был опубликован в нем",
     title VARCHAR(255) COMMENT "Название поста",
     post_text TINYTEXT COMMENT "Текст поста",    
 	created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT "Время создания строки",  
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT "Время обновления строки", 
-    PRIMARY KEY (community_id, id) COMMENT "Составной первичный ключ"
-) COMMENT "Посты пользователя";
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT "Время обновления строки"
+);
 
-ALTER TABLE community_posts ADD CONSTRAINT community_posts_community_id FOREIGN KEY (community_id) REFERENCES communities(id);
-
-CREATE TABLE user_posts(
-	id INT UNSIGNED NOT NULL COMMENT "Индетификатор поста",
-    user_id INT UNSIGNED NOT NULL COMMENT "Ссылка на пользователя",
-    title VARCHAR(255) COMMENT "Название поста",
-    post_text TINYTEXT COMMENT "Текст поста",    
-	created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT "Время создания строки",  
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT "Время обновления строки", 
-    PRIMARY KEY (user_id, id) COMMENT "Составной первичный ключ"
-) COMMENT "Посты пользователя";
-
-ALTER TABLE user_posts ADD CONSTRAINT user_posts_user_id  FOREIGN KEY (user_id) REFERENCES users(id);
+ALTER TABLE posts ADD CONSTRAINT posts_user_id  FOREIGN KEY (user_created_id) REFERENCES users(id);
+ALTER TABLE posts ADD CONSTRAINT posts_community_pub_id  FOREIGN KEY (community_pub_id) REFERENCES communities(id);
 
 /*
 Рассуждения касательно постов для разых сущностей верны и для лайков, поэтому решил сделать три таблицы
@@ -136,17 +125,18 @@ CREATE TABLE user_likes(
     likes_dict JSON COMMENT "'список' юзеров"
 ) COMMENT "Список лайков";
 
-CREATE TABLE user_post_likes(
+ALTER TABLE user_likes ADD CONSTRAINT user_likes_user_id  FOREIGN KEY (user_id) REFERENCES users(id);
+
+CREATE TABLE posts_likes(
     post_id INT UNSIGNED PRIMARY KEY NOT NULL  COMMENT "id объекта которому поставили лайк",
     likes_dict JSON COMMENT "'список' юзеров"
 ) COMMENT "Список лайков";
 
-CREATE TABLE community_post_likes(
-    post_id INT UNSIGNED PRIMARY KEY NOT NULL  COMMENT "id объекта которому поставили лайк",
-    likes_dict JSON COMMENT "'список' юзеров"
-) COMMENT "Список лайков";
+ALTER TABLE posts_likes ADD CONSTRAINT post_likes_post_id  FOREIGN KEY (post_id) REFERENCES posts(id);
 
 CREATE TABLE media_likes(
     media_id INT UNSIGNED PRIMARY KEY NOT NULL  COMMENT "id объекта которому поставили лайк",
     likes_dict JSON COMMENT "'список' юзеров"
 ) COMMENT "Список лайков";
+
+ALTER TABLE media_likes ADD CONSTRAINT media_likes_media_id  FOREIGN KEY (media_id) REFERENCES media(id);
