@@ -112,7 +112,6 @@ CREATE TABLE posts (
 );
 
 ALTER TABLE posts ADD CONSTRAINT posts_user_id  FOREIGN KEY (user_created_id) REFERENCES users(id);
-ALTER TABLE posts ADD CONSTRAINT posts_community_pub_id  FOREIGN KEY (community_pub_id) REFERENCES communities(id);
 
 /*
 Рассуждения касательно постов для разых сущностей верны и для лайков, поэтому решил сделать три таблицы
@@ -140,3 +139,4 @@ CREATE TABLE media_likes(
 ) COMMENT "Список лайков";
 
 ALTER TABLE media_likes ADD CONSTRAINT media_likes_media_id  FOREIGN KEY (media_id) REFERENCES media(id);
+
