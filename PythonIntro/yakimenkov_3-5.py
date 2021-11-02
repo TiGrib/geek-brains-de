@@ -6,6 +6,7 @@ adjectives = ["веселый", "яркий", "зеленый", "утопичн�
 
 
 def get_jokes(num_of_jokes: int):
+    """ Function which generate a jokes """
     return [f"{choice(nouns)} {choice(adverbs)} {choice(adjectives)}" for num in range(num_of_jokes)]
 
 print(get_jokes(4))
