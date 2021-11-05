@@ -18,5 +18,5 @@ def currency_rates(cur_code: str):
 
 
 if __name__ == "__main__":
-    cur = currency_rates("usd")
-    print(cur)
+    print(currency_rates("usd"))
+    print(currency_rates("eur"))
