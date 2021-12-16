@@ -1,0 +1,10 @@
+{
+   "headers": "{'Date': 'Thu, 16 Dec 2021 12:23:33 GMT', 'Server': 'mw1348.eqiad.wmnet', 'X-Content-Type-Options': 'nosniff', 'X-Frame-Options': 'DENY', 'Content-Disposition': 'inline; filename=api-result.json', 'Cache-Control': 'private, max-age=0, s-maxage=0', 'Vary': 'Accept-Encoding', 'Set-Cookie': 'mediawikiwiki_BPsession=q868qoou3tp9pskgdo9nf0c92jjk0p9u; path=/; secure; HttpOnly, loginnotify_prevlogins=2021-wo2qtz-igotrzrrrq8v6lk3n2gx69tj9v0gct9; expires=Tue, 14-Jun-2022 12:23:33 GMT; Max-Age=15552000; path=/; secure; HttpOnly, cpPosIndex=9%401639657413%23c25033bef7c0eb3f264748f9200b7ca7; expires=Thu, 16-Dec-2021 12:23:43 GMT; Max-Age=10; path=/; secure; HttpOnly, UseDC=master; expires=Thu, 16-Dec-2021 12:23:43 GMT; Max-Age=10; path=/; secure; HttpOnly, UseCDNCache=false; expires=Thu, 16-Dec-2021 12:23:43 GMT; Max-Age=10; path=/; secure; HttpOnly', 'Content-Length': '78', 'Content-Type': 'application/json; charset=utf-8', 'Age': '0', 'X-Cache': 'cp3060 miss, cp3056 pass', 'X-Cache-Status': 'pass', 'Server-Timing': 'cache;desc=\"pass\", host;desc=\"cp3056\"', 'Strict-Transport-Security': 'max-age=106384710; includeSubDomains; preload', 'Report-To': '{ \"group\": \"wm_nel\", \"max_age\": 86400, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }', 'NEL': '{ \"report_to\": \"wm_nel\", \"max_age\": 86400, \"failure_fraction\": 0.05, \"success_fraction\": 0.0}', 'Permissions-Policy': 'interest-cohort=()', 'X-Client-IP': '83.242.179.134', 'Accept-Ranges': 'bytes', 'Connection': 'keep-alive'}",
+   "body": {
+      "login": {
+         "result": "Success",
+         "lguserid": 17567811,
+         "lgusername": "Kayakimenkov"
+      }
+   }
+}
