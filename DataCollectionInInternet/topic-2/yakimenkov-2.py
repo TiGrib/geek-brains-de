@@ -4,23 +4,22 @@ import requests
 from pprint import pprint
 from bs4 import BeautifulSoup as bs
 
+USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36"
+HH_URL = "https://hh.ru/"
 
-def hh_get_vacancies(name: str, page_num: int):
-    main_url = "https://hh.ru/"
 
+def hh_get_vacancies_page(name: str, page_num: int):
     params = {
         "text": name,
         "page": page_num,
     }
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36"
-    }
-    response = requests.get(main_url + "search/vacancy", params=params, headers=headers)
+    headers = {"User-Agent": USER_AGENT}
+    response = requests.get(HH_URL + "search/vacancy", params=params, headers=headers)
     return bs(response.text, "html.parser")
 
 
 def unicode_to_int(salary: str) -> int:
-    return int("".join([i for i in splited_salary[0] if i != u"\u202f"]))
+    return int("".join([i for i in salary if i != u"\u202f"]))
 
 
 def vacancy(name, url, min_salary=None, max_salary=None, currency=None) -> Dict:
@@ -35,12 +34,11 @@ def vacancy(name, url, min_salary=None, max_salary=None, currency=None) -> Dict:
 
 if __name__ == "__main__":
     name = "python"
-    pages = 5
+    pages = 50
     vac_list = []
     for page_num in range(1, pages + 1):
-        vacancies = hh_get_vacancies(name, page_num).find_all(
-            "div", {"class": "vacancy-serp-item"}
-        )
+        page = hh_get_vacancies_page(name, page_num)
+        vacancies = page.find_all("div", {"class": "vacancy-serp-item"})
         for vac in vacancies:
             info = vac.find("a", {"data-qa": "vacancy-serp__vacancy-title"})
             try:
@@ -53,9 +51,9 @@ if __name__ == "__main__":
                         vacancy(
                             info.text,
                             info.get("href").split("?")[0],
-                            unicode_to_int(splited_salary[0]),
-                            unicode_to_int(splited_salary[2]),
-                            splited_salary[3],
+                            min_salary=unicode_to_int(splited_salary[0]),
+                            max_salary=unicode_to_int(splited_salary[2]),
+                            currency=splited_salary[3],
                         )
                     )
                 elif splited_salary[0] == "от":
@@ -78,5 +76,10 @@ if __name__ == "__main__":
                         )
                     )
             except:
+                vac_list.append(
+                    vacancy(
+                        info.text,
+                        info.get("href").split("?")[0],
+                    )
+                )
                 continue
-    pprint(vac_list)
