@@ -10,7 +10,8 @@ from utils.mongo_connector import Connector
 class LentaNewsScraper:
     def __init__(self):
         self.main_url = "https://lenta.ru"
-        self.user_agent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36"
+        self.user_agent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)" \
+                          "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36"
 
         self.mongo_collection = Connector().client["news"]["lenta"]
 
