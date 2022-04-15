@@ -55,7 +55,7 @@ def getplaces():
                 },
                 "$minDistance": 0,
                 "$maxDistance": dist, } },
-                "likes": {"$gt": 5}
+                "rating": {"$gte": 5}
                 })
 
     resultset = []
