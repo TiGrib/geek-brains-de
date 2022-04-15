@@ -54,7 +54,9 @@ def getplaces():
                     "coordinates" : [ float(lng), float(lat) ]
                 },
                 "$minDistance": 0,
-                "$maxDistance": dist, } } })
+                "$maxDistance": dist, } },
+                "likes": {"$gt": 5}
+                })
 
     resultset = []
     for place in cursor:
