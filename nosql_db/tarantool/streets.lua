@@ -17,7 +17,6 @@ local function newplace(request)
     local place = {}
     -- json от фронтенда
     local obj = request:json()
-
     --[[ Генерируем уникальный идентификатор для отзыва]]
     place['_id'] = uuid.str()
     obj['_id'] = place['_id']
@@ -26,6 +25,7 @@ local function newplace(request)
     place['geometry.type'] = obj['geometry']['type']
     place['geometry.coordinates'] = obj['geometry']['coordinates']
     place['properties.comment'] = obj['properties']['comment']
+    place['properties.rate'] = obj['properties']['rate']
 
     --[[
         Создаём сущность для таблицы
@@ -116,6 +116,7 @@ box.space.streets:format({
         {name="geometry.type", type="string"},
         {name="geometry.coordinates", type="array"},
         {name="properties.comment", type="string"},
+        {name="properties.rate", type="unsigned"}
 })
 --[[ Создаём первичный индекс ]]
 box.space.streets:create_index('primary', {
