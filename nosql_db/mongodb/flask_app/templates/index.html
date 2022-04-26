@@ -51,6 +51,7 @@
           */
          function onMapClick(e) {
              var response = window.prompt('What do you think about this place?', 'not bad');
+             var rating = window.prompt('Who many starts?') 
              if (response != null) {
                  var data = {
                      "type": "Feature",
@@ -60,7 +61,8 @@
                      },
                      "properties": {
                          "comment": response
-                     }
+                     },
+                     "rating": parseInt(rating)
                  }
 
                  fetch("/newplace", {
