@@ -56,6 +56,21 @@ COPY core-site.xml $HADOOP_HOME/etc/hadoop/
 COPY hdfs-site.xml $HADOOP_HOME/etc/hadoop/
 COPY yarn-site.xml $HADOOP_HOME/etc/hadoop/
 
+
+# install Hive
+
+RUN wget https://apache-mirror.rbc.ru/pub/apache/hive/hive-2.3.9/apache-hive-2.3.9-bin.tar.gz && \
+    mkdir hive/ && \
+    tar xzf apache-hive-2.3.9-bin.tar.gz -C hive/ && \
+    rm apache-hive-2.3.9-bin.tar.gz
+
+ENV HIVE_HOME /home/hduser/hive/apache-hive-2.3.9-bin/
+ENV PATH $PATH:$HIVE_HOME/bin
+
+RUN schematool -dbType derby -initSchema
+
+COPY hive-site.xml /home/hduser/hive/apache-hive-2.3.9-bin/conf/
+
 # set up ports and scripts
 ENV PATH $PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin:/home/hduser/.local/bin
 
