@@ -18,6 +18,7 @@ trap finish EXIT
 
 $HADOOP_HOME/sbin/start-dfs.sh
 $HADOOP_HOME/sbin/start-yarn.sh
+$HIVE_HOME/bin/hiveserver2 &> /dev/null &
 
 hdfs dfs -mkdir -p /tmp /logs /user/hduser /user/hive/warehouse
 hdfs dfs -chmod +w /tmp /logs /user/hduser /user/hive/warehouse
