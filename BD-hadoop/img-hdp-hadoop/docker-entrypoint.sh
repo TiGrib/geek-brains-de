@@ -22,6 +22,5 @@ $HADOOP_HOME/sbin/start-yarn.sh
 hdfs dfs -mkdir -p /tmp /logs /user/hduser /user/hive/warehouse
 hdfs dfs -chmod +w /tmp /logs /user/hduser /user/hive/warehouse
 
-hiveserver2 &> /dev/null &
 
 bash
